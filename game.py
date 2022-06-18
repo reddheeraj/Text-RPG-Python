@@ -77,6 +77,7 @@ def main():
 
 def start():   #new game
     os.system('cls')
+    print("------------------")
     print("Enter your name: ")
     option = input(">>>> ")
     global PlayerA
@@ -85,15 +86,18 @@ def start():   #new game
 
 def start1():  #main menu for game
     os.system('cls')
+    print("----------------------------------------")
     print("Name: %s" % PlayerA.name)
     print("Attack: %i" % PlayerA.attack)
     print("Coins: %i" % PlayerA.coins)
     print("Health: %i/%i" % (PlayerA.health, PlayerA.MaxHealth))
     print("Potions: %i" % PlayerA.potions)
     print("Weapons: %s\n" % PlayerA.weapons)
-    print("Current Weapon: %s\n" % PlayerA.currentWeapon)
-
+    print("Current Weapon: %s" % PlayerA.currentWeapon)
+    print("----------------------------------------")
+    print(" ")
     print("1.Fight\n2.Shop\n3.Inventory\n4.Save\n5.Exit\n")
+    print("----------------------------------------")
     option = input(">>>> ")
     if option == "1":
         prepare_to_fight()
@@ -125,8 +129,10 @@ def prepare_to_fight():
 def fight():
     os.system('cls')
     print("    %s        vs        %s" % (PlayerA.name, enemy.name))
+    print("-------------------------------------")
     print("%s's Health: %i/%i  %s's Health: %i/%i" % (PlayerA.name, PlayerA.health, PlayerA.MaxHealth, enemy.name, enemy.health, enemy.MaxHealth))
     print("Potions: %i" % PlayerA.potions)
+    print("-------------------------------------")
     print("1.Attack\n2.Drink Potion\n3.Run\n")
     option = input(">>>>")
     if option == "1":
@@ -144,19 +150,19 @@ def attack():
     PDamage = random.randint(int(PlayerA.attack/3), PlayerA.attack) #if p/3, player miss the chance
     EDamage = random.randint(int(enemy.attack/3), enemy.attack)     #if p/3, then enemy miss  the atteck  
     
-    if PDamage == PlayerA.attack/3:
-        print("Attack Missed!")
-        time.sleep(2)
+    if PDamage == int(PlayerA.attack/3):
+        print("Your Attack Missed!")
+        time.sleep(1)
     else: 
         enemy.health -= PDamage
         print("You have dealt %i damage" % PDamage)
-        time.sleep(2)
+        time.sleep(1)
     
     if enemy.health <= 0:
         victory()
     
-    if EDamage == enemy.attack/3:
-        print("Attack Missed!")
+    if EDamage == int(enemy.attack/3):
+        print("%s's Attack Missed!" % enemy.name)
         time.sleep(2)
     else: 
         PlayerA.health -= EDamage
@@ -271,14 +277,16 @@ def shop():
     option = input(">>>> ")
 
     if option == "1":
-        for weap in Weapons_in_Shop:
-            print(weap)
+        i = 1
+        for key,value in Weapons_in_Shop.items():
+            print(str(i) + ') ' + key + ': ' + str(value) + " coins")
+            i += 1
         print("Which weapon do you want to buy?")
         time.sleep(2)
         option = input(">>>> ")
         
         if option in Weapons_in_Shop:
-            print("That will cost %i", Weapons_in_Shop[option])
+            print("That will cost %i" % Weapons_in_Shop[option])
             time.sleep(2)
             if PlayerA.coins >= Weapons_in_Shop[option]:
                 PlayerA.coins -= Weapons_in_Shop[option]
@@ -286,11 +294,15 @@ def shop():
                 print("You have bought %s" % option)    
                 time.sleep(2)
                 shop()
+            else:
+                print ("You don't have enough **Coins**!".capitalize())
+                shop()
 
 
 
     if option == "2":
         print("How many potions do you want to buy?\n")
+        print("------------------------------------")
         time.sleep(2)
         option = int(input(">>>> "))
         cost = 5*option
