@@ -309,7 +309,9 @@ def potion():
     
 def potion1():    #INCREASES HEALTH 
     i = 1
+    print("------------------------------------")
     print("Which potion do you want?")
+    print("[Type the name of the potion you want to drink.]")
     for key,value in PlayerA.potions.items():
         print(str(i) + ") " + key + ": " + str(value))
         i += 1
@@ -318,7 +320,7 @@ def potion1():    #INCREASES HEALTH
 
     if option in PlayerA.potions:
     
-        if option == "Potion" :
+        if option == "Potion":                       #potion = +30 health
             if PlayerA.potions[option] > 0:
                 PlayerA.health += 20 
                 if PlayerA.health > PlayerA.MaxHealth:
@@ -329,9 +331,9 @@ def potion1():    #INCREASES HEALTH
             else:
                 print("You don't have any Potions!")
                 time.sleep(2)
-        elif option == "Greater Healing Potion" :
+        elif option == "Greater Healing Potion":
                 if PlayerA.potions[option] > 0:
-                    PlayerA.health += 50               #potion increases 30 health   
+                    PlayerA.health += 50               #ghpotion increases 50 health   
                     if PlayerA.health > PlayerA.MaxHealth:
                         PlayerA.health = PlayerA.MaxHealth
                         PlayerA.potions[option] -= 1
@@ -342,7 +344,7 @@ def potion1():    #INCREASES HEALTH
                     time.sleep(2)
     else:
         print("That %s does not exist!" % option)
-        os.system('cls')
+        #os.system('cls')
         potion1()
 
 
@@ -443,8 +445,11 @@ def equip():
 
 def shop():
     os.system('cls')
-    print("Welcome to shop!\nWhat would you like to buy?\n")
+
+    print("-----------------------------")
+    print("\nWelcome to shop!\nWhat would you like to buy?\n")
     print("1.Weapons\n2.Potions\n3.Back\n")
+    print("-----------------------------")
 
     option = input(">>>> ")
 
@@ -458,12 +463,12 @@ def shop():
         option = input(">>>> ")
         
         if option in Weapons_in_Shop:
-            print("That will cost %i 🪙 !" % Weapons_in_Shop[option])
+            print("That will cost %i 🪙" % Weapons_in_Shop[option])
             time.sleep(2)
             if PlayerA.coins >= Weapons_in_Shop[option]:
                 PlayerA.coins -= Weapons_in_Shop[option]
                 PlayerA.weapons.append(option)
-                print("You have bought %s" % option)    
+                print("You have bought %s!" % option)    
                 time.sleep(2)
                 shop()
             else:
