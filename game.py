@@ -553,7 +553,124 @@ def bhargav():
     pass
 
 def jatin():
-    pass
+  
+    from random import randint
+
+    print("      .----------------.  .----------------.  .----------------.  .----------------.     ")
+    print("     | .--------------. || .--------------. || .--------------. || .--------------. |         ")
+    print("     | | ____    ____ | || |      __      | || |   ________   | || |  _________   | |")
+    print("     | ||_   \  /   _|| || |     /  \     | || |  |  __   _|  | || | |_   ___  |  | |")
+    print("     | |  |   \/   |  | || |    / /\ \    | || |  |_/  / /    | || |   | |_  \_|  | |")
+    print("     | |  | |\  /| |  | || |   / ____ \   | || |     .'.' _   | || |   |  _|  _   | |")
+    print("     | | _| |_\/_| |_ | || | _/ /    \ \_ | || |   _/ /__/ |  | || |  _| |___/ |  | |")
+    print("     | ||_____||_____|| || ||____|  |____|| || |  |________|  | || | |_________|  | |")
+    print("     | |              | || |              | || |              | || |              | |")
+    print("     | '--------------' || '--------------' || '--------------' || '--------------' |")
+    print("     ' ----------------'  '----------------'  '----------------'  '----------------' ")
+
+    time.sleep(1)
+    os.system('cls')
+    print("        You get traped in a maze there are monster at randon location you need to         ")          
+    print("         find a way to go to the exit of the maze without encount the enemy            ")
+    print("                  10 gold coins are waitng for you at the exit gate                        ")
+    time.sleep(1)
+    os.system('cls')
+    charX = 0
+    charY = 0
+    mazeX = 5
+    mazeY = 5
+    enemy_number = 6
+    board = [["| |" for a in range(mazeX)] for b in range(mazeY)]
+    currentposition = "|&|" 
+    board[charX][charY] = currentposition
+    ls = []
+    for m in range(enemy_number):
+        enemyX = randint(1,5)
+        enemyY = randint(1,5)
+        ele = (enemyX,enemyY)
+        ls.append(ele)
+
+    while True:
+        def check():
+            for i in range(4):
+        
+                    if ls[i][0] == charX and ls[i][1] == charY:
+                    
+                        print("YOU ATTACKED BY MONSTER GAME OVER")
+                        board[charX][charY] = "|X|"
+                        time.sleep(2)
+                        start1()
+                    if charX == mazeX-1 and charY == mazeY-1:
+                        
+                        print("You win the game")
+                        print("You get 10 gold coins")
+                        PlayerA.coins += 10
+                        time.sleep(2)
+                        start1()
+
+
+        #print(ls)
+        for i in board:
+            print("--- --- --- --- ---")
+            print(" ".join(i))
+            print("--- --- --- --- ---")
+        print("                   -🥇-")
+
+        print("Instruction :")
+        print("Up: W  ||  Down: S  || Left: A  || Right: D")
+        
+        option = input("Enter you option:>>> ")
+        
+        if option == "W":
+            os.system('cls')
+            board[charX][charY] = "| |"
+            charX -= 1
+            if mazeX > charX:
+                board[charX][charY] = "|&|"
+            else:
+                print("You hit the wall")
+                charX = 0
+                charY = 0
+                board[charX][charY] = "|&|"
+            check()
+            
+        elif option == "S":
+            os.system('cls')
+            board[charX][charY] = "| |"
+            charX += 1
+            if mazeX > charX:
+                board[charX][charY] = "|&|"
+            else:
+                print("You hit the wall")
+                time.sleep(1)
+                charX = 0
+                charY = 0
+                board[charX][charY] = "|&|"
+            check()
+        elif option == "A":
+            os.system('cls')
+            board[charX][charY] = "| |"
+            charY -= 1
+            if mazeY > charY:
+                board[charX][charY] = "|&|"
+            else:
+                print("You hit the wall")
+                charX = 0
+                charY = 0
+                board[charX][charY] = "|&|"
+            check()
+        elif option == "D":
+            os.system('cls')
+            board[charX][charY] = "| |"
+            charY += 1
+            if mazeY > charY:
+                board[charX][charY] = "|&|"
+            else:
+                print("You hit the wall")
+                charX = 0
+                charY = 0
+                board[charX][charY] = "|&|"
+            check()
 
 
 
