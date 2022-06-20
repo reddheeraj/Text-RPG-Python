@@ -342,30 +342,30 @@ def potion1():    #INCREASES HEALTH
     print("------------------------------------")
     option = input(">>>> ")
 
-    if option in PlayerA.potions:
     
-        if option == "Potion":                       #potion = +30 health
+    
+    if option == "Potion":                       #potion = +30 health
+        if PlayerA.potions[option] > 0:
+            PlayerA.health += 20 
+            if PlayerA.health > PlayerA.MaxHealth:
+                PlayerA.health = PlayerA.MaxHealth
+                PlayerA.potions[option] -= 1
+                print("You drank a Potion!")
+                time.sleep(2)
+        else:
+            print("You don't have any Potions!")
+            time.sleep(2)
+    elif option == "Greater Healing Potion":
             if PlayerA.potions[option] > 0:
-                PlayerA.health += 20 
+                PlayerA.health += 50               #ghpotion increases 50 health   
                 if PlayerA.health > PlayerA.MaxHealth:
                     PlayerA.health = PlayerA.MaxHealth
                     PlayerA.potions[option] -= 1
-                    print("You drank a Potion!")
+                    print("You drank a Greater Healing Potion!")
                     time.sleep(2)
             else:
-                print("You don't have any Potions!")
+                print("You don't have any Greater Healing Potions!")
                 time.sleep(2)
-        elif option == "Greater Healing Potion":
-                if PlayerA.potions[option] > 0:
-                    PlayerA.health += 50               #ghpotion increases 50 health   
-                    if PlayerA.health > PlayerA.MaxHealth:
-                        PlayerA.health = PlayerA.MaxHealth
-                        PlayerA.potions[option] -= 1
-                        print("You drank a Greater Healing Potion!")
-                        time.sleep(2)
-                else:
-                    print("You don't have any Greater Healing Potions!")
-                    time.sleep(2)
     else:
         print("That %s does not exist!" % option)
         #os.system('cls')
