@@ -1,9 +1,14 @@
+# -*- coding:utf-8 -*-
+
+
+#Main Page   /DONE/
+#Make a LORE /DONE/
 #GH potions in shop /DONE/
-#Main Page   edit little bit
-#mini quests/something to earn coins /TASKS GIVEN/
-#Monster Class - Parent Class:::Derived classes for species
 #different attacks /DONE/
+#mini quests/something to earn coins /TASKS GIVEN/ /2 DONE/ /1 LEFT/
+#Monster Class - Parent Class:::Derived classes for species
 #web
+#uh locations system ig /Not Doing/
 
 
 import sys
@@ -11,11 +16,15 @@ import os
 import pickle
 import random
 import time
-#import ascii_magic
 
-Mini_Games_List = [""]
 
-Weapons_in_Shop = {"Steel Sword": 40, "Silver Sword":80} #Weapons shop category
+
+
+
+
+Mini_Games_List = ["Coin Flip", "Bhargav", "Maze-Jatin"]
+
+Weapons_in_Shop = {"Steel Sword": 50, "Silver Sword":100} #Weapons shop category
 Potions_in_Shop = {"Potion":5, "Greater Healing Potion":20} #health potions shop category
 
 
@@ -26,7 +35,7 @@ class Player:  #player overlay
         self.health = self.MaxHealth
         self.MaxMana = 20
         self.mana = self.MaxMana
-        self.coins = 100
+        self.coins = 40
         self.potions = {"Potion": 3, "Greater Healing Potion": 0}
         self.base_attack = 10
         self.weapons = ["Wooden Sword"]
@@ -68,20 +77,19 @@ def main():
 
     os.system('cls')
     
-    print("     **       ** ******** **         ******    *******   ****     **** ********  ")
-    print("    /**      /**/**///// /**        **////**  **/////** /**/**   **/**/**/////   ")
-    print("    /**   *  /**/**      /**       **    //  **     //**/**//** ** /**/**        ")
-    print("    /**  *** /**/******* /**      /**       /**      /**/** //***  /**/*******   ")
-    print("    /** **/**/**/**////  /**      /**       /**      /**/**  //*   /**/**////    ")
-    print("**** //****/**      /**      //**    **//**     ** /**   /    /**/**             ")
-    print("**/   ///**/********/******** //******  //*******  /**        /**/********       ")
-    print("/       // //////// ////////   //////    ///////   //         // ////////        ")
+    
+    print("\t\t███████████████████████████████████████████████████████████████████████▀█")
+    print("\t\t█─▄▄▄▄█─▄▄─█▄─▄███─▄▄─███▄─▄███▄─▄▄─█▄─█─▄█▄─▄▄─█▄─▄███▄─▄█▄─▀█▄─▄█─▄▄▄▄█")
+    print("\t\t█▄▄▄▄─█─██─██─██▀█─██─████─██▀██─▄█▀██▄▀▄███─▄█▀██─██▀██─███─█▄▀─██─██▄─█")
+    print("\t\t▀▄▄▄▄▄▀▄▄▄▄▀▄▄▄▄▄▀▄▄▄▄▀▀▀▄▄▄▄▄▀▄▄▄▄▄▀▀▀▄▀▀▀▄▄▄▄▄▀▄▄▄▄▄▀▄▄▄▀▄▄▄▀▀▄▄▀▄▄▄▄▄▀")
 
     time.sleep(3)
     
     os.system('cls')
-    print("Welcome to Solo Leveling\n")
+    print("----------------------------")
+    print("Welcome to Solo Leveling\n".upper())
     print("1.Start\n2.Load\n3.Exit")
+    print("----------------------------")
 
     option = input(">>>> ")
     if option == "1":
@@ -112,6 +120,19 @@ def start():   #new game
     option = input(">>>> ")
     global PlayerA
     PlayerA = Player(option)
+    lore()
+
+def lore():
+    os.system('cls')
+    lorestr1 = "A Long time ago, this World was very peaceful...\nBut One day, A Portal opened into our world, and Monsters came pouring out of it.\nA Small group of Humans suddenly started Awakening! They came together to Defeat the monsters and save Humanity."
+    lorestr2 = "\n\nYou are one of the gifted Heroes who was Awakened with SuperHuman Powers and Strength! Now go kill some Monsters!"
+    lorestr = lorestr1 + lorestr2
+    #lorelist = lorestr.split()
+    
+    for l in lorestr:
+        print(l, end = '')
+        time.sleep(0.05)
+    time.sleep(3)
     start1()
 
 def start1():  #main menu for game
@@ -122,10 +143,11 @@ def start1():  #main menu for game
     print("Attack: %i 🗡️" % PlayerA.attack)
     print("Coins: %i 🪙" % PlayerA.coins)
     print("Mana: %i 🔥 "% PlayerA.mana)
-    print("Health: %i/%i ♥️" % (PlayerA.health, PlayerA.MaxHealth))
+    print("Health: %i/%i ❤️" % (PlayerA.health, PlayerA.MaxHealth))
+    print("Mana: %i/%i 💙" % (PlayerA.mana, PlayerA.MaxMana))
 
     for key,value in PlayerA.potions.items():
-        print(str(i)+ ") " + key + ": 🧪 " + str(value))
+        print("\t" + str(i)+ ") " + key + ": 🧪 " + str(value))
         i += 1
     #print("Potions: %i ➕\nGreater Healing Potions: %i 🧪" % (PlayerA.potions[], PlayerA.potions[2]))
 
@@ -172,9 +194,13 @@ def fight():
         PlayerA.mana = 0
 
     os.system('cls')
+
+    
+
     print("    %s        vs        %s" % (PlayerA.name, enemy.name))
     print("-------------------------------------")
     print("%s's Health: %i/%i  %s's Health: %i/%i" % (PlayerA.name, PlayerA.health, PlayerA.MaxHealth, enemy.name, enemy.health, enemy.MaxHealth))
+    print("%s's Mana: %i/%i" % (PlayerA.name, PlayerA.mana, PlayerA.MaxMana))
     print("Potions: %s" % PlayerA.potions)
     print("-------------------------------------")
     print("1.Attack\n2.Drink Potion\n3.Run\n")
@@ -530,30 +556,74 @@ def shop():
 def minigame():
     os.system('cls')
     i = 1
-    print("which game do you want to play?")
+    print("---------------------------------------------------")
+    print("which game do you want to play?\nEnter 4 to exit")
     for x in Mini_Games_List:
         print(str(i) + ") " + x)
         i += 1
+    print("---------------------------------------------------")
     option = int(input(">>>> "))
     if option == 1:
-        sanidhya()
+        coinflip()
     elif option == 2:
         bhargav()
     elif option == 3:
         jatin()
+    elif option == 4:
+        start1()
     else: 
         print("That game does not exist!")
         time.sleep(2)
         minigame()
 
-def sanidhya():   #increase PlayerA.coin acc to game
-    pass
+def coinflip():   
+    os.system('cls')
+    print("------------------------------------------------------------------------")
+    cf = "Welcome to COIN FLIP!\nBet an Amount and guess HEADS or TAILS.\nIf you guess the flip correctly, you win your bet and coins!\nIf you do not guess correctly, you lose your bet and coins.\n"
+    #for c in cf:
+    #    print(c, end = "")
+    #    time.sleep(0.02)
+    #time.sleep(2)
+    print("------------------------------------------------------------------------\n")
+    ####
+
+    cfchoice = random.choice(["Heads", "Tails"])
+    bet = 0
+    
+    print("Enter BET Amount: ")
+    bet = int(input(">>>> "))
+
+    if PlayerA.coins >= bet:
+        print("Enter Guess: [heads(h) or tails(t)]")
+        guess = input(">>>> ")
+
+        if guess == "h":
+            guess = "Heads"
+        elif guess == "t":
+            guess = "Tails"
+        
+        
+        if guess == cfchoice:
+            print("You have Guessed CORRECTLY!!!!!\nYou have Won %i 🪙" % bet)
+            PlayerA.coins += bet
+            time.sleep(3)
+            start1()
+        else:
+            print("You have guessed INCORRECTLY. You lost %i 🪙" % bet)
+            PlayerA.coins -= bet
+            time.sleep(3)
+            start1()
+    else:
+        print("You do not have Enough 🪙 coins!!!")
+        time.sleep(4)
+        minigame()
+        
+
 
 def bhargav():
     pass
 
 def jatin():
-  
     from random import randint
 
     print("      .----------------.  .----------------.  .----------------.  .----------------.     ")
@@ -568,12 +638,12 @@ def jatin():
     print("     | '--------------' || '--------------' || '--------------' || '--------------' |")
     print("     ' ----------------'  '----------------'  '----------------'  '----------------' ")
 
-    time.sleep(1)
+    time.sleep(2)
     os.system('cls')
     print("        You get traped in a maze there are monster at randon location you need to         ")          
     print("         find a way to go to the exit of the maze without encount the enemy            ")
     print("                  10 gold coins are waitng for you at the exit gate                        ")
-    time.sleep(1)
+    time.sleep(8)
     os.system('cls')
     charX = 0
     charY = 0
@@ -593,15 +663,15 @@ def jatin():
     while True:
         def check():
             for i in range(4):
-        
+
                     if ls[i][0] == charX and ls[i][1] == charY:
-                    
+
                         print("YOU ATTACKED BY MONSTER GAME OVER")
                         board[charX][charY] = "|X|"
                         time.sleep(2)
                         start1()
                     if charX == mazeX-1 and charY == mazeY-1:
-                        
+
                         print("You win the game")
                         print("You get 10 gold coins")
                         PlayerA.coins += 10
@@ -618,9 +688,9 @@ def jatin():
 
         print("Instruction :")
         print("Up: W  ||  Down: S  || Left: A  || Right: D")
-        
+
         option = input("Enter you option:>>> ")
-        
+
         if option == "W":
             os.system('cls')
             board[charX][charY] = "| |"
@@ -633,7 +703,7 @@ def jatin():
                 charY = 0
                 board[charX][charY] = "|&|"
             check()
-            
+
         elif option == "S":
             os.system('cls')
             board[charX][charY] = "| |"
