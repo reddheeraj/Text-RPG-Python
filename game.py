@@ -5,7 +5,7 @@
 #Make a LORE /DONE/
 #GH potions in shop /DONE/
 #different attacks /DONE/
-#mini quests/something to earn coins /TASKS GIVEN/ /1 DONE/ /2 LEFT/
+#mini quests/something to earn coins /TASKS GIVEN/ /2 DONE/ /1 LEFT/
 #Monster Class - objects being different monsters /DONE/
 #web /Not doing because don't know how to implement Save file/Load file in web mode
 #uh locations system ig /Not Doing or maybe I shall/ /Acutally Did it/
