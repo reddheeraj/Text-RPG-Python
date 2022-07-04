@@ -713,103 +713,66 @@ def coinflip():
 
 def bhargav():  #not finished
     os.system('cls')
-    import pygame
-    import time
-    import random
- 
-    pygame.init()
-    
-    white = (255, 255, 255)
-    black = (0, 0, 0)
-    red = (255, 0, 0)
-    blue = (0, 0, 255)
-    
-    dis_width = 800
-    dis_height = 600
-    
-    dis = pygame.display.set_mode((dis_width, dis_height))
-    pygame.display.set_caption('Snake Game')
-    
-    clock = pygame.time.Clock()
-    
-    snake_block = 10
-    snake_speed = 20
-    
-    font_style = pygame.font.SysFont(None, 30)
-    
-    
-    def message(msg, color):
-        mesg = font_style.render(msg, True, color)
-        dis.blit(mesg, [dis_width/3, dis_height/3])
-    
-    
-    def gameLoop():  # creating a function
-        game_over = False
-        game_close = False
-    
-        x1 = dis_width / 2
-        y1 = dis_height / 2
-    
-        x1_change = 0
-        y1_change = 0
-    
-        foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
-        foody = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
-    
-        while not game_over:
-    
-            while game_close == True:
-                dis.fill(white)
-                message("You Lost! Press Q-Quit or C-Play Again", red)
-                pygame.display.update()
-    
-                for event in pygame.event.get():
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_q:
-                            game_over = True
-                            game_close = False
-                        if event.key == pygame.K_c:
-                            gameLoop()
-    
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    game_over = True
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        x1_change = -snake_block
-                        y1_change = 0
-                    elif event.key == pygame.K_RIGHT:
-                        x1_change = snake_block
-                        y1_change = 0
-                    elif event.key == pygame.K_UP:
-                        y1_change = -snake_block
-                        x1_change = 0
-                    elif event.key == pygame.K_DOWN:
-                        y1_change = snake_block
-                        x1_change = 0
-    
-            if x1 >= dis_width or x1 < 0 or y1 >= dis_height or y1 < 0:
-                game_close = True
-    
-            x1 += x1_change
-            y1 += y1_change
-            dis.fill(white)
-            pygame.draw.rect(dis, blue, [foodx, foody, snake_block, snake_block])
-            pygame.draw.rect(dis, black, [x1, y1, snake_block, snake_block])
-            pygame.display.update()
-    
-            if x1 == foodx and y1 == foody:
-                print("Yummy!!")
-                print(PlayerA.coins)
-                PlayerA.coins += 20
-                print(PlayerA.coins)
-            clock.tick(snake_speed)
-    
-        pygame.quit()
-        quit()
-    
-    
-    gameLoop()
+    from random import randrange
+    from turtle import *
+
+    from freegames import square, vector
+
+    food = vector(0, 0)
+    snake = [vector(10, 0)]
+    aim = vector(0, -10)
+
+
+    def change(x, y):
+        """Change snake direction."""
+        aim.x = x
+        aim.y = y
+
+
+    def inside(head):
+        """Return True if head inside boundaries."""
+        return -200 < head.x < 190 and -200 < head.y < 190
+
+
+    def move():
+        """Move snake forward one segment."""
+        head = snake[-1].copy()
+        head.move(aim)
+
+        if not inside(head) or head in snake:
+            square(head.x, head.y, 9, 'red')
+            update()
+            return
+
+        snake.append(head)
+
+        if head == food:
+            print('Snake:', len(snake))
+            food.x = randrange(-15, 15) * 10
+            food.y = randrange(-15, 15) * 10
+        else:
+            snake.pop(0)
+
+        clear()
+
+        for body in snake:
+            square(body.x, body.y, 9, 'black')
+
+        square(food.x, food.y, 9, 'green')
+        update()
+        ontimer(move, 100)
+
+
+    setup(420, 420, 370, 0)
+    hideturtle()
+    tracer(False)
+    listen()
+    onkey(lambda: change(10, 0), 'Right')
+    onkey(lambda: change(-10, 0), 'Left')
+    onkey(lambda: change(0, 10), 'Up')
+    onkey(lambda: change(0, -10), 'Down')
+    move()
+    done()
     
 
 def jatin():
