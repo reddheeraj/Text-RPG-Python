@@ -547,9 +547,6 @@ def minigame():
         minigame()
 
 def sanidhya():   #increase PlayerA.coin acc to game
-    pass
-
-def bhargav():
     def intro():
         print("                It is impossible to win in this still you can try you best XD ")
         print("                       Enter board number in you turn to play your move           ")
@@ -705,6 +702,9 @@ def bhargav():
     while not checkWin():
         compMove()
         ppMove()
+        
+def bhargav():
+    pass
 
 def jatin():
   
