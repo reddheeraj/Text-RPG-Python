@@ -5,23 +5,25 @@
 #Make a LORE /DONE/
 #GH potions in shop /DONE/
 #different attacks /DONE/
-#mini quests/something to earn coins /TASKS GIVEN/ /2 DONE/ /1 LEFT/
+#mini quests/something to earn coins /TASKS GIVEN/ /3 DONE/ /0 LEFT/
 #Monster Class - objects being different monsters /DONE/
 #web /Not doing because don't know how to implement Save file/Load file in web mode
 #uh locations system ig /Not Doing or maybe I shall/ /Acutally Did it/
 
-#to do
-#potions bug (no. not changing after use)
+#to do 
+#potions bug (no. not changing after use) /DONE/
 
 
-#changes compared to prev version:
+#changes compared to prev version: (3/7/22 to 4/7/22)
 """
 1.made Weapons_in_Shop carry tuple (cost,attack)
 2.made Monster Class, with objects being different species
 3.made changes in entire project regarding the points 1 and 2.
 4.Location system with new monsters per location added 
-  > (character moves to new loc based on count value, so far cannot come back to prev loc)
+  > (character moves to new loc based on count value)
   > (location changes in victory() function)
+  > (Location visual added as loc_image() function)
+  > (We can now traverse to previously unlocked Locations via the loc_change() function)
 5.linked Monsters with different locations
   > 3 monsters per location (for now)
 """
@@ -40,10 +42,13 @@ Mini_Games_List = ["Coin Flip", "Bhargav", "Maze-Jatin"]
 Weapons_in_Shop = {"Steel Sword": (50,15), "Silver Sword":(100,30), "Blaze Sword": (200,50), "Z - Sword": (500,60), "God Killer": (700,80)} #Weapons shop category
 Potions_in_Shop = {"Potion":5, "Greater Healing Potion":20} #health potions shop category
 
-Locations = {0:"Void Cave",1:"Forest of Elves",2: "Heavenly Skies"}
+Locations = {0:"Void Cave",1:"Forest of Elves",2: "Heavenly Skies"}  #used to change locations in victory()
 
 
 count = 0
+
+new_loc_1 = False
+new_loc_2 = False
 
 class Player:  #player overlay
     def __init__(self, name):
@@ -52,7 +57,7 @@ class Player:  #player overlay
         self.health = self.MaxHealth
         self.MaxMana = 20
         self.mana = self.MaxMana
-        self.coins = 200
+        self.coins = 20
         self.potions = {"Potion": 3, "Greater Healing Potion": 0}
         self.base_attack = 10
         self.weapons = ["Fists", "Wooden Sword"]
@@ -125,7 +130,7 @@ Sky_Monarch = Monster("Sky Monarch", 700, 100, 100, "Incinerate!!!")
 
 
 lis = {"Void Cave":[Rat, Vamp, BigBat],"Forest of Elves":[Archer_Elf, War_Elf, Elf_Chief], "Heavenly Skies":[Giant_Eagle, Wind_Dragon ,Sky_Monarch]}
-
+#lis is used to choose which monster is enemy 
 
 
 def main():
@@ -193,6 +198,38 @@ def lore():
     time.sleep(3)
     game1()
 
+def loc_image():
+    if PlayerA.currLocation == Locations[0]:
+        print("/================\\")
+        print("|      /\\        |")
+        print("|     /  \\       |")
+        print("|  /\/     \     |")
+        print("| /   ---   \/\  |")
+        print("|/   |   |     \\ |")
+        print("\================/")
+    if PlayerA.currLocation == Locations[1]:
+        print("/===================\\")
+        print("|        _-_        |")
+        print("|     /~~   ~~\     |")
+        print("|  /~~         ~~\  |")
+        print("| {  ~   ~~~   ~  } |")
+        print("|  \   _-   -_   /  |")
+        print("|    ~ \\   // ~     |")
+        print("|       |   |       |")
+        print("|       |   |       |")
+        print("|     //     \\      |")
+        print("\===================/")
+    if PlayerA.currLocation == Locations[2]:
+        print("/=========================\\")
+        print("|   ,--.                  |")
+        print("|       )                 |")
+        print("|      _'-. _             |")
+        print("|     (    ) ),--.        |")
+        print("|                 )-.__   |")
+        print("|______________________)  |")
+        print("|                         |")
+        print("\=========================/")
+
 def game1():  #main menu for game
     os.system('cls')
     i = 1
@@ -214,10 +251,16 @@ def game1():  #main menu for game
     print("Current Weapon: %s" % PlayerA.currentWeapon)
     
     print("Location: " + PlayerA.currLocation)
+    print("----------------------------------------")
+    
+    loc_image()
 
     print("----------------------------------------")
     print(" ")
-    print("1.Fight\n2.Shop\n3.Inventory\n4.Mini-Games\n5.Save\n6.Exit\n")
+    if new_loc_1 == True or new_loc_2 == True:
+        print("1.Fight\n2.Shop\n3.Inventory\n4.Mini-Games\n5.Save\n6.Exit\n7.Move Locations\n")
+    else:
+        print("1.Fight\n2.Shop\n3.Inventory\n4.Mini-Games\n5.Save\n6.Exit\n")
     print("----------------------------------------")
     option = input(">>>> ")
     if option == "1":
@@ -237,8 +280,53 @@ def game1():  #main menu for game
             game1()            
     elif option == "6":
         sys.exit()
+    elif option == "7":
+        loc_change()
     else:
         game1()
+
+def loc_change():
+    
+    if new_loc_2 == True:
+        print("Available locations are: ")
+        time.sleep(1)
+        print("0. Void Cave\n1. Forest of Elves\n2. Heavenly Skies")
+        print("===============================")
+        time.sleep(1)
+        ch = int(input("Enter choice no.\n>>>> "))
+        if PlayerA.currLocation == Locations[ch]:
+            print("You are in [" + Locations[ch] + "] already!")
+            time.sleep(2)
+            game1()
+
+        elif PlayerA.currLocation != Locations[ch]:
+            print("You have moved to [" + Locations[ch] + "]")
+            PlayerA.currLocation = Locations[ch]
+            time.sleep(2)
+            game1()
+
+    elif new_loc_1 == True:
+        print("Available locations are: ")
+        time.sleep(1)
+        print("0. Void Cave\n1. Forest of Elves")
+        print("===============================")
+        time.sleep(1)
+        ch = int(input("Enter choice [0 or 1]\n>>>> "))
+        if PlayerA.currLocation == Locations[ch]:
+            print("You are in [" + Locations[ch] + "] already!")
+            time.sleep(2)
+            game1()
+
+        elif PlayerA.currLocation != Locations[ch]:
+            print("You have moved to [" + Locations[ch] + "]")
+            PlayerA.currLocation = Locations[ch]
+            time.sleep(2)
+            game1()
+    else:
+        print("You have not unlocked any Locations yet!\nPlay the game and defeat more enemies!")
+        time.sleep(2)
+        game1()
+            
 
 def prepare_to_fight():
     global enemy
@@ -267,11 +355,11 @@ def fight():
     
 
     print("    %s        vs        %s" % (PlayerA.name, enemy.name))
-    print("-------------------------------------")
+    print("---------------------------------------------------------")
     print("%s's Health: %i/%i  %s's Health: %i/%i" % (PlayerA.name, PlayerA.health, PlayerA.MaxHealth, enemy.name, enemy.health, enemy.MaxHealth))
     print("%s's Mana: %i/%i" % (PlayerA.name, PlayerA.mana, PlayerA.MaxMana))
     print("Potions: %s" % PlayerA.potions)
-    print("-------------------------------------")
+    print("---------------------------------------------------------")
     print("1.Attack\n2.Drink Potion\n3.Run\n")
     option = input(">>>> ")
     if option == "1":
@@ -461,25 +549,30 @@ def victory():
     print("You have defeated the enemy %s" % enemy.name)
     time.sleep(2)
     print("You have obtained %i 🪙  gold coins!" %enemy.GainCoins)
-    time.sleep(2)
     print("=================================")
+    time.sleep(2)
     global count
+    global new_loc_1
+    global new_loc_2
     count = count + 1
     if count == 5:
         PlayerA.currLocation = Locations[1]
-        PlayerA.MaxHealth += 200
+        PlayerA.MaxHealth += 150
         PlayerA.MaxMana += 20
+        PlayerA.health = PlayerA.MaxHealth        #reset player health after location upgrade
         print("Congratulations! You have moved to a new Location [Forest of Elves]!")
+        new_loc_1 = True
         time.sleep(3)
     if count == 15:
         PlayerA.currLocation = Locations[2]
-        PlayerA.MaxHealth += 500
+        PlayerA.MaxHealth += 400
         PlayerA.MaxMana += 50
+        PlayerA.health = PlayerA.MaxHealth        #reset player health after location upgrade
         print("Congratulations! You have moved to a new Location [Heavenly Skies]!")
+        new_loc_2 = True
         time.sleep(3)
     PlayerA.mana = PlayerA.MaxMana            #resets player mana
     game1()
-
 
 
 
@@ -718,8 +811,147 @@ def coinflip():
         
 
 
-def bhargav():  #not finished
+def bhargav():  
     os.system('cls')
+
+    import pygame
+    import time
+    import random
+
+    snake_speed = 15
+    score = 0
+    x = 0
+
+    window_x = 720
+    window_y = 480
+
+    
+    black = pygame.Color(0, 0, 0)
+    white = pygame.Color(255, 255, 255)
+    red = pygame.Color(255, 0, 0)
+    snake_color = pygame.Color(247, 138, 119)
+    #blue = pygame.Color(0, 0, 255)
+
+    pygame.init()
+
+    pygame.display.set_caption('Snake Game')
+    game_window = pygame.display.set_mode((window_x, window_y))
+    fps = pygame.time.Clock()
+
+    snake_position = [100, 50]
+    snake_body = [[100, 50],
+                [90, 50],
+                [80, 50],
+                [70, 50]
+                ]
+
+    fruit_position = [random.randrange(1, (window_x//10)) * 10,
+                    random.randrange(1, (window_y//10)) * 10]
+    fruit_spawn = True
+
+    
+    direction = 'RIGHT'
+    change_to = direction
+
+    def show_score(choice, color, font, size):
+
+        score_font = pygame.font.SysFont(font, size)
+        score_surface = score_font.render('Score : ' + str(score), True, color)
+        score_rect = score_surface.get_rect()
+        game_window.blit(score_surface, score_rect)
+
+    def game_over():
+
+        my_font = pygame.font.SysFont('freesansbold', 50)
+        game_over_surface = my_font.render(
+            'Your Score is : ' + str(score), True, red)
+
+        game_over_rect = game_over_surface.get_rect()
+        game_over_rect.midtop = (window_x/2, window_y/4)
+        game_window.blit(game_over_surface, game_over_rect)
+
+        pygame.display.flip()
+        time.sleep(2)
+        pygame.quit()
+        
+        print("\nPlayer earned " + str(x) + '🪙')
+        PlayerA.coins += x
+
+        time.sleep(5)
+        minigame()
+
+
+    while True:
+        
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    change_to = 'UP'
+                if event.key == pygame.K_DOWN:
+                    change_to = 'DOWN'
+                if event.key == pygame.K_LEFT:
+                    change_to = 'LEFT'
+                if event.key == pygame.K_RIGHT:
+                    change_to = 'RIGHT'
+
+
+        if change_to == 'UP' and direction != 'DOWN':
+            direction = 'UP'
+        if change_to == 'DOWN' and direction != 'UP':
+            direction = 'DOWN'
+        if change_to == 'LEFT' and direction != 'RIGHT':
+            direction = 'LEFT'
+        if change_to == 'RIGHT' and direction != 'LEFT':
+            direction = 'RIGHT'
+
+
+        if direction == 'UP':
+            snake_position[1] -= 10
+        if direction == 'DOWN':
+            snake_position[1] += 10
+        if direction == 'LEFT':
+            snake_position[0] -= 10
+        if direction == 'RIGHT':
+            snake_position[0] += 10
+
+
+        snake_body.insert(0, list(snake_position))
+        if snake_position[0] == fruit_position[0] and snake_position[1] == fruit_position[1]:
+            score += 10
+            x += 2
+            fruit_spawn = False
+        else:
+            snake_body.pop()
+            
+        if not fruit_spawn:
+            fruit_position = [random.randrange(1, (window_x//10)) * 10,
+                            random.randrange(1, (window_y//10)) * 10]
+            
+        fruit_spawn = True
+        game_window.fill(black)
+        
+        for pos in snake_body:
+            pygame.draw.rect(game_window, snake_color,
+                            pygame.Rect(pos[0], pos[1], 10, 10))
+        pygame.draw.rect(game_window, white, pygame.Rect(
+            fruit_position[0], fruit_position[1], 10, 10))
+
+
+        if snake_position[0] < 0 or snake_position[0] > window_x-10:
+            game_over()
+        if snake_position[1] < 0 or snake_position[1] > window_y-10:
+            game_over()
+
+        for block in snake_body[1:]:
+            if snake_position[0] == block[0] and snake_position[1] == block[1]:
+                game_over()
+
+        show_score(1, white, 'times new roman', 20)
+
+        pygame.display.update()
+        fps.tick(snake_speed)
+
+
     
 
 def jatin():
@@ -740,9 +972,9 @@ def jatin():
 
     time.sleep(2)
     os.system('cls')
-    print("        You get traped in a maze there are monster at randon location you need to         ")          
-    print("         find a way to go to the exit of the maze without encount the enemy            ")
-    print("                  10 gold coins are waitng for you at the exit gate                        ")
+    print("        You get trapped in a maze there are monsters at randon locations! you need to         ")          
+    print("           find a way to go to the exit of the maze without encountering the enemy.            ")
+    print("                      100 gold coins are waitng for you at the exit.                        ")
     time.sleep(8)
     os.system('cls')
     charX = 0
@@ -772,8 +1004,8 @@ def jatin():
                         game1()
                     if charX == mazeX-1 and charY == mazeY-1:
 
-                        print("You WON the game")0
-                        print("You get 10 gold coins!")
+                        print("You WON the game")
+                        print("You get 100 gold coins!")
                         PlayerA.coins += 100
                         time.sleep(2)
                         game1()
