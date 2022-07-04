@@ -5,28 +5,45 @@
 #Make a LORE /DONE/
 #GH potions in shop /DONE/
 #different attacks /DONE/
-#mini quests/something to earn coins /TASKS GIVEN/ /2 DONE/ /1 LEFT/
-#Monster Class - Parent Class:::Derived classes for species
-#web
-#uh locations system ig /Not Doing/
+#mini quests/something to earn coins /TASKS GIVEN/ /1 DONE/ /2 LEFT/
+#Monster Class - objects being different monsters /DONE/
+#web /Not doing because don't know how to implement Save file/Load file in web mode
+#uh locations system ig /Not Doing or maybe I shall/ /Acutally Did it/
+
+#to do
+#potions bug (no. not changing after use)
+
+
+#changes compared to prev version:
+"""
+1.made Weapons_in_Shop carry tuple (cost,attack)
+2.made Monster Class, with objects being different species
+3.made changes in entire project regarding the points 1 and 2.
+4.Location system with new monsters per location added 
+  > (character moves to new loc based on count value, so far cannot come back to prev loc)
+  > (location changes in victory() function)
+5.linked Monsters with different locations
+  > 3 monsters per location (for now)
+"""
 
 
 import sys
 import os
 import pickle
 import random
-import time
-
-
-
+import time 
 
 
 
 Mini_Games_List = ["Coin Flip", "Bhargav", "Maze-Jatin"]
 
-Weapons_in_Shop = {"Steel Sword": 50, "Silver Sword":100} #Weapons shop category
+Weapons_in_Shop = {"Steel Sword": (50,15), "Silver Sword":(100,30), "Blaze Sword": (200,50), "Z - Sword": (500,60), "God Killer": (700,80)} #Weapons shop category
 Potions_in_Shop = {"Potion":5, "Greater Healing Potion":20} #health potions shop category
 
+Locations = {0:"Void Cave",1:"Forest of Elves",2: "Heavenly Skies"}
+
+
+count = 0
 
 class Player:  #player overlay
     def __init__(self, name):
@@ -35,48 +52,84 @@ class Player:  #player overlay
         self.health = self.MaxHealth
         self.MaxMana = 20
         self.mana = self.MaxMana
-        self.coins = 40
+        self.coins = 200
         self.potions = {"Potion": 3, "Greater Healing Potion": 0}
         self.base_attack = 10
-        self.weapons = ["Wooden Sword"]
-        self.currentWeapon = ["Wooden Sword"]
+        self.weapons = ["Fists", "Wooden Sword"]
+        self.currentWeapon = ["Fists"]
+        self.currLocation = "Void Cave"
 
     @property
     def attack(self):
         attack = self.base_attack
+        if self.currentWeapon == "Fists":
+            attack = self.base_attack
         if self.currentWeapon == "Wooden Sword":
             attack+= 5
         if self.currentWeapon == "Steel Sword":
-            attack += 15
+            attack += Weapons_in_Shop["Steel Sword"][1]
         if self.currentWeapon == "Silver Sword":
-            attack += 30
+            attack += Weapons_in_Shop["Silver Sword"][1]
+        if self.currentWeapon == "Blaze Sword":
+            attack += Weapons_in_Shop["Blaze Sword"][1]
         
         return attack
 
-class Goblin:
-    def __init__(self, name):
-        self.name = name
-        self.MaxHealth = 50
-        self.health = self.MaxHealth
-        self.attack = 5
-        self.GainCoins = 10
-        #self.level = 1
-Goblin1 = Goblin("Goblin 1")
 
-class Wolf: 
-    def __init__(self, name):
+
+
+# class Ratman:
+#     def __init__(self, name):
+#         self.name = name
+#         self.MaxHealth = 50
+#         self.health = self.MaxHealth
+#         self.attack = 5
+#         self.GainCoins = 10
+#         #self.level = 1
+# Rat = Ratman("Rat Henchman")
+
+# class Vampire: 
+#     def __init__(self, name):
+#         self.name = name
+#         self.MaxHealth = 70
+#         self.health = self.MaxHealth
+#         self.attack = 7
+#         self.GainCoins = 20
+# Vamp = Vampire("Vampire Lazarus")
+
+class Monster:
+    def __init__(self,name,maxh,attack,gcoins,splatk):
         self.name = name
-        self.MaxHealth = 70
+        self.MaxHealth = maxh
         self.health = self.MaxHealth
-        self.attack = 7
-        self.GainCoins = 20
-Wolf1 = Wolf("Wolf 1")
+        self.attack = attack
+        self.GainCoins = gcoins
+        self.splAttack = splatk
+
+
+Rat = Monster("RatMan", 50, 5, 10, "Spear Throw")
+Vamp = Monster("Vampire Lazarus", 70, 7, 20, "X - Slash")
+BigBat = Monster("Big Bat", 100, 12, 25, "Super Sonic")
+
+Archer_Elf = Monster("Archer Elf", 150, 20, 40, "Lightning Arrow")
+War_Elf = Monster("Warrior Elf", 175, 30, 40, "Thunder Bagua")
+Elf_Chief = Monster("Elf Chief Horith", 250, 50, 50, "Arcane Magic")
+
+Giant_Eagle = Monster("Giant Eagle", 375, 70, 80, "Hurricane")
+Wind_Dragon  = Monster("Wind Dragon", 500, 80, 85, "Air Cutter")
+Sky_Monarch = Monster("Sky Monarch", 700, 100, 100, "Incinerate!!!")
+
+
+lis = {"Void Cave":[Rat, Vamp, BigBat],"Forest of Elves":[Archer_Elf, War_Elf, Elf_Chief], "Heavenly Skies":[Giant_Eagle, Wind_Dragon ,Sky_Monarch]}
+
+
 
 def main():
     ####MAIN TITLE EDIT
 
     os.system('cls')
     
+    print("\n\n\n")
     
     print("\t\t\t███████████████████████████████████████████████████████████████████████▀█")
     print("\t\t\t█─▄▄▄▄█─▄▄─█▄─▄███─▄▄─███▄─▄███▄─▄▄─█▄─█─▄█▄─▄▄─█▄─▄███▄─▄█▄─▀█▄─▄█─▄▄▄▄█")
@@ -93,7 +146,7 @@ def main():
 
     option = input(">>>> ")
     if option == "1":
-        start()
+        new_game()
     elif option == "2":
         if os.path.exists("savefile") == True:
             os.system('cls')
@@ -102,7 +155,7 @@ def main():
                 PlayerA = pickle.load(file)
             print("Loading Save state...")
             option = input(' ')
-            start1()
+            game1()
         else: 
             print("You have no savefile.\n")
             option = input(' ')
@@ -113,14 +166,15 @@ def main():
         main()
 
 
-def start():   #new game
+def new_game():   #new game
     os.system('cls')
     print("------------------")
     print("Enter your name: ")
     option = input(">>>> ")
     global PlayerA
     PlayerA = Player(option)
-    lore()
+    game1()
+    #lore()
 
 def lore():
     os.system('cls')
@@ -133,9 +187,9 @@ def lore():
         print(l, end = '')
         time.sleep(0.05)
     time.sleep(3)
-    start1()
+    game1()
 
-def start1():  #main menu for game
+def game1():  #main menu for game
     os.system('cls')
     i = 1
     print("----------------------------------------")
@@ -154,6 +208,9 @@ def start1():  #main menu for game
     #print("Potions: %i ➕" % PlayerA.potions) 
     print("Weapons: %s\n" % PlayerA.weapons)
     print("Current Weapon: %s" % PlayerA.currentWeapon)
+    
+    print("Location: " + PlayerA.currLocation)
+
     print("----------------------------------------")
     print(" ")
     print("1.Fight\n2.Shop\n3.Inventory\n4.Mini-Games\n5.Save\n6.Exit\n")
@@ -173,19 +230,27 @@ def start1():  #main menu for game
             pickle.dump(PlayerA, file)
             print("Save State Loaded")
             option = input(' ')
-            start1()            
+            game1()            
     elif option == "6":
         sys.exit()
     else:
-        start1()
+        game1()
 
 def prepare_to_fight():
     global enemy
-    enemychoice = random.randint(1,2)
-    if enemychoice == 1:
-        enemy = Goblin1
-    else:
-        enemy = Wolf1
+    
+    no = [0,1,2]
+    ch = random.choice(no)
+    enemy = lis[PlayerA.currLocation][ch]
+    
+    # no = [1,2,3]
+    # enemychoice = random.choice(no)
+    # if enemychoice == 1:
+    #     enemy = Rat
+    # elif enemychoice == 2:
+    #     enemy = Vamp
+    # else:
+    #     enemy = BigBat
     fight()
 
 def fight():
@@ -253,20 +318,22 @@ def special_attack():
 
     # enemy SAttack   #so enemy can either attack or dodge the spcial attack
     SEA = 0
-    Enemy_SA = ""
-    if enemy == Goblin1:
+    #Enemy_SA = ""
+    if PlayerA.currLocation == "Void Cave":
         SEA = random.randint(7,15)
        # Enemy_name = enemy.name
-        Enemy_SA = "Spear Throw"
-    if enemy == Wolf1:
+       # Enemy_SA = "Spear Throw"
+    if PlayerA.currLocation == "Forest of Elves":
         SEA = random.randint(10,20)
        # Enemy_name = enemy.name
-        Enemy_SA = "X - Slash"
+       # Enemy_SA = "X - Slash"
+    if PlayerA.currLocation == "Heavenly Skies":
+        SEA = random.randint(10,25)
 
 
     if SEA > 13:
         PlayerA.health -= SEA
-        print("%s has used %s" % (enemy.name, Enemy_SA))
+        print("%s has used %s" % (enemy.name, enemy.splAttack))
         print("%s has dealt %i damage to you" % (enemy.name, SEA))
         time.sleep(2)
 
@@ -276,7 +343,7 @@ def special_attack():
             fight()
 
     else:
-        EDamage = random.randint(int(enemy.attack/3), enemy.attack)     #if p/3, then enemy miss  the atteck  
+        EDamage = random.randint(int(enemy.attack/3), enemy.attack)     #if p/3, then enemy miss the atteck  
         if EDamage == int(enemy.attack/3):
             print("%s's Attack Missed!" % enemy.name)
             time.sleep(2)
@@ -344,20 +411,20 @@ def potion1():    #INCREASES HEALTH
 
     
     
-    if option == "Potion":                       #potion = +30 health
+    if option == "Potion":                       #potion = +20 health
         if PlayerA.potions[option] > 0:
-            PlayerA.health += 20 
+            PlayerA.health += 30 
             if PlayerA.health > PlayerA.MaxHealth:
                 PlayerA.health = PlayerA.MaxHealth
-                PlayerA.potions[option] -= 1
-                print("You drank a Potion!")
+                PlayerA.potions["Potion"] -= 1
+                print("You drank a Potion!\nPotions left: " + str(PlayerA.potions["Potion"]))
                 time.sleep(2)
         else:
             print("You don't have any Potions!")
             time.sleep(2)
     elif option == "Greater Healing Potion":
             if PlayerA.potions[option] > 0:
-                PlayerA.health += 50               #ghpotion increases 50 health   
+                PlayerA.health += 80               #ghpotion increases 50 health   
                 if PlayerA.health > PlayerA.MaxHealth:
                     PlayerA.health = PlayerA.MaxHealth
                     PlayerA.potions[option] -= 1
@@ -377,7 +444,7 @@ def run():                 # decrease coins if want to run, else fight
           PlayerA.coins -=5
           print("You ran away \n")
           time.sleep(2)
-          start1()
+          game1()
     else:
         print("You Don't have enough 🪙 to run away!")
         time.sleep(2)
@@ -392,7 +459,20 @@ def victory():
     time.sleep(2)
     print("You have obtained %i 🪙  gold coins!" %enemy.GainCoins)
     time.sleep(2)
-    start1()
+    print("=================================")
+    global count
+    count = count + 1
+    if count == 2:
+        PlayerA.currLocation = Locations[1]
+        PlayerA.MaxHealth += 200
+        print("Congratulations! You have moved to a new Location [Forest of Elves]!")
+        time.sleep(3)
+    if count == 4:
+        PlayerA.currLocation = Locations[2]
+        PlayerA.MaxHealth += 500
+        print("Congratulations! You have moved to a new Location [Heavenly Skies]!")
+        time.sleep(3)
+    game1()
 
 
 
@@ -403,7 +483,7 @@ def defeat():
     time.sleep(2)
     PlayerA.health = PlayerA.MaxHealth     #resets player health
     PlayerA.mana = PlayerA.MaxMana         #resets player mana
-    start1()
+    game1()
     
 
     
@@ -433,7 +513,7 @@ def inventory():
     if option == "1":
         equip()
     elif option == "2":
-        start1()
+        game1()
 
 
 def equip():
@@ -454,13 +534,13 @@ def equip():
         equip()
     
     elif option == 'Back':
-        start1()
+        game1()
 
     elif option in PlayerA.weapons:
         PlayerA.currentWeapon = option
         print("You have equipped %s" % PlayerA.currentWeapon)
         time.sleep(2)
-        start1()
+        game1()
     else:
         print("That item %s does not exist in your inventory" % option)
         time.sleep(2)
@@ -480,22 +560,28 @@ def shop():
     if option == "1":
         i = 1
         for key,value in Weapons_in_Shop.items():
-            print(str(i) + ') ' + key + ': ' + str(value) + " 🪙")
+            print(str(i) + ') ' + key + ': ' + str(Weapons_in_Shop[key][0]) + " 🪙\n  > Damage: " + str(Weapons_in_Shop[key][1]))
             i += 1
-        print("Which weapon do you want to buy?")
+        print("Which weapon do you want to buy?\n[press 1 to get back to main menu]")
         time.sleep(2)
         option = input(">>>> ")
         
+        if option == "1":
+            game1()
+
         if option in Weapons_in_Shop:
-            print("That will cost %i 🪙" % Weapons_in_Shop[option])
+            print("------------------------------")
+            print("That will cost %i 🪙" % Weapons_in_Shop[option][0])
             time.sleep(2)
-            if PlayerA.coins >= Weapons_in_Shop[option]:
-                PlayerA.coins -= Weapons_in_Shop[option]
+            if PlayerA.coins >= Weapons_in_Shop[option][0]:
+                PlayerA.coins -= Weapons_in_Shop[option][0]
                 PlayerA.weapons.append(option)
+                print("------------------------------")
                 print("You have bought %s!" % option)    
                 time.sleep(2)
                 shop()
             else:
+                print("------------------------------")
                 print ("You don't have enough 🪙 Coins!".capitalize())
                 time.sleep(2)
                 shop()
@@ -552,7 +638,7 @@ def shop():
             shop()
     
     elif option == "3":
-        start1()
+        game1()
     else:
         print("That option does not exist. Try Again.")
         time.sleep(2)
@@ -569,13 +655,13 @@ def minigame():
     print("---------------------------------------------------")
     option = int(input(">>>> "))
     if option == 1:
-        coinflip()
+        coinflip()  #change mini game into a more fun version
     elif option == 2:
-        bhargav()
+        bhargav()  #add some insane logic minigame
     elif option == 3:
         jatin()
     elif option == 4:
-        start1()
+        game1()
     else: 
         print("That game does not exist!")
         time.sleep(2)
@@ -599,7 +685,7 @@ def coinflip():
     bet = int(input(">>>> "))
 
     if PlayerA.coins >= bet:
-        print("Enter Guess: [heads(h) or tails(t)]")
+        print("Enter Guess: [HEADS(h) or TAILS(t)]")
         guess = input(">>>> ")
 
         if guess == "h":
@@ -612,12 +698,12 @@ def coinflip():
             print("You have Guessed CORRECTLY!!!!!\nYou have Won %i 🪙" % bet)
             PlayerA.coins += bet
             time.sleep(3)
-            start1()
+            game1()
         else:
             print("You have guessed INCORRECTLY. You lost %i 🪙" % bet)
             PlayerA.coins -= bet
             time.sleep(3)
-            start1()
+            game1()
     else:
         print("You do not have Enough 🪙 coins!!!")
         time.sleep(4)
@@ -625,11 +711,13 @@ def coinflip():
         
 
 
-def bhargav():
-    pass
+def bhargav():  #not finished
+    os.system('cls')
+    
 
 def jatin():
     from random import randint
+    os.system('cls')
 
     print("      .----------------.  .----------------.  .----------------.  .----------------.     ")
     print("     | .--------------. || .--------------. || .--------------. || .--------------. |         ")
@@ -671,17 +759,17 @@ def jatin():
 
                     if ls[i][0] == charX and ls[i][1] == charY:
 
-                        print("YOU ATTACKED BY MONSTER GAME OVER")
+                        print("YOU WERE ATTACKED BY THE MONSTER!\nGAME OVER")
                         board[charX][charY] = "|X|"
                         time.sleep(2)
-                        start1()
+                        game1()
                     if charX == mazeX-1 and charY == mazeY-1:
 
-                        print("You win the game")
-                        print("You get 10 gold coins")
+                        print("You WON the game")
+                        print("You get 10 gold coins!")
                         PlayerA.coins += 10
                         time.sleep(2)
-                        start1()
+                        game1()
 
 
         #print(ls)
@@ -691,7 +779,7 @@ def jatin():
             print("--- --- --- --- ---")
         print("                   -🥇-")
 
-        print("Instruction :")
+        print("Instructions :")
         print("Up: W  ||  Down: S  || Left: A  || Right: D")
 
         option = input("Enter you option:>>> ")
