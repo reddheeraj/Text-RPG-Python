@@ -72,6 +72,10 @@ class Player:  #player overlay
             attack += Weapons_in_Shop["Silver Sword"][1]
         if self.currentWeapon == "Blaze Sword":
             attack += Weapons_in_Shop["Blaze Sword"][1]
+        if self.currentWeapon == "Z - Sword":
+            attack += Weapons_in_Shop["Z - Sword"][1]
+        if self.currentWeapon == "God Killer":
+            attack += Weapons_in_Shop["God Killer"][1]
         
         return attack
 
@@ -173,8 +177,8 @@ def new_game():   #new game
     option = input(">>>> ")
     global PlayerA
     PlayerA = Player(option)
-    game1()
-    #lore()
+    #game1()
+    lore()
 
 def lore():
     os.system('cls')
@@ -454,7 +458,6 @@ def victory():
     #os.system('cls')
     PlayerA.coins += enemy.GainCoins
     enemy.health = enemy.MaxHealth            #resets enemy health
-    PlayerA.mana = PlayerA.MaxMana            #resets player mana
     print("You have defeated the enemy %s" % enemy.name)
     time.sleep(2)
     print("You have obtained %i 🪙  gold coins!" %enemy.GainCoins)
@@ -462,17 +465,21 @@ def victory():
     print("=================================")
     global count
     count = count + 1
-    if count == 2:
+    if count == 5:
         PlayerA.currLocation = Locations[1]
         PlayerA.MaxHealth += 200
+        PlayerA.MaxMana += 20
         print("Congratulations! You have moved to a new Location [Forest of Elves]!")
         time.sleep(3)
-    if count == 4:
+    if count == 15:
         PlayerA.currLocation = Locations[2]
         PlayerA.MaxHealth += 500
+        PlayerA.MaxMana += 50
         print("Congratulations! You have moved to a new Location [Heavenly Skies]!")
         time.sleep(3)
+    PlayerA.mana = PlayerA.MaxMana            #resets player mana
     game1()
+
 
 
 
