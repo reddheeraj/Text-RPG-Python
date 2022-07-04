@@ -765,9 +765,9 @@ def jatin():
                         game1()
                     if charX == mazeX-1 and charY == mazeY-1:
 
-                        print("You WON the game")
+                        print("You WON the game")0
                         print("You get 10 gold coins!")
-                        PlayerA.coins += 10
+                        PlayerA.coins += 100
                         time.sleep(2)
                         game1()
 
