@@ -37,7 +37,7 @@ import time
 
 
 
-Mini_Games_List = ["Coin Flip", "Bhargav", "Maze-Jatin"]
+Mini_Games_List = ["Impossible Tic Tac Toe", "Snake Game", "Conquer the Maze"]
 
 Weapons_in_Shop = {"Steel Sword": (50,15), "Silver Sword":(100,30), "Blaze Sword": (200,50), "Z - Sword": (500,60), "God Killer": (700,80)} #Weapons shop category
 Potions_in_Shop = {"Potion":5, "Greater Healing Potion":20} #health potions shop category
@@ -93,7 +93,7 @@ class Player:  #player overlay
 #         self.MaxHealth = 50
 #         self.health = self.MaxHealth
 #         self.attack = 5
-#         self.GainCoins = 10
+#         self.Gaincoins = 10
 #         #self.level = 1
 # Rat = Ratman("Rat Henchman")
 
@@ -103,7 +103,7 @@ class Player:  #player overlay
 #         self.MaxHealth = 70
 #         self.health = self.MaxHealth
 #         self.attack = 7
-#         self.GainCoins = 20
+#         self.Gaincoins = 20
 # Vamp = Vampire("Vampire Lazarus")
 
 class Monster:
@@ -112,7 +112,7 @@ class Monster:
         self.MaxHealth = maxh
         self.health = self.MaxHealth
         self.attack = attack
-        self.GainCoins = gcoins
+        self.Gaincoins = gcoins
         self.splAttack = splatk
 
 
@@ -195,6 +195,7 @@ def lore():
     for l in lorestr:
         print(l, end = '')
         time.sleep(0.05)
+    print("...")    
     time.sleep(3)
     game1()
 
@@ -236,7 +237,7 @@ def game1():  #main menu for game
     print("----------------------------------------")
     print("Name: %s" % PlayerA.name)
     print("Attack: %i 🗡️" % PlayerA.attack)
-    print("Coins: %i 🪙" % PlayerA.coins)
+    print("coins: %i 🪙" % PlayerA.coins)
     print("Mana: %i 🔥 "% PlayerA.mana)
     print("Health: %i/%i ❤️" % (PlayerA.health, PlayerA.MaxHealth))
     print("Mana: %i/%i 💙" % (PlayerA.mana, PlayerA.MaxMana))
@@ -544,11 +545,11 @@ def run():                 # decrease coins if want to run, else fight
 
 def victory():
     #os.system('cls')
-    PlayerA.coins += enemy.GainCoins
+    PlayerA.coins += enemy.Gaincoins
     enemy.health = enemy.MaxHealth            #resets enemy health
     print("You have defeated the enemy %s" % enemy.name)
     time.sleep(2)
-    print("You have obtained %i 🪙  gold coins!" %enemy.GainCoins)
+    print("You have obtained %i 🪙  gold coins!" %enemy.Gaincoins)
     print("=================================")
     time.sleep(2)
     global count
@@ -682,7 +683,7 @@ def shop():
                 shop()
             else:
                 print("------------------------------")
-                print ("You don't have enough 🪙 Coins!".capitalize())
+                print ("You don't have enough 🪙 coins!".capitalize())
                 time.sleep(2)
                 shop()
         else:
@@ -717,6 +718,7 @@ def shop():
             else:
                 print("You don't have enough 🪙!")
                 time.sleep(2)
+                shop()
         elif option == "Greater Healing Potion":
             print("How many Greater Healing Potions you want to buy? ")
             print("--------------------------------------")    
@@ -733,7 +735,7 @@ def shop():
                 time.sleep(2)
                 shop()
         else:
-            print("THat potion does not exist!")
+            print("That potion does not exist!")
             time.sleep(2)
             shop()
     
@@ -755,11 +757,11 @@ def minigame():
     print("---------------------------------------------------")
     option = int(input(">>>> "))
     if option == 1:
-        coinflip()  #change mini game into a more fun version
+        TicTacToe()  #minigame with min max logic
     elif option == 2:
-        bhargav()  #add some insane logic minigame
+        snakegame()  #snake game
     elif option == 3:
-        jatin()
+        mazegame()  # maze game with monsters
     elif option == 4:
         game1()
     else: 
@@ -767,7 +769,8 @@ def minigame():
         time.sleep(2)
         minigame()
 
-def coinflip():   
+def TicTacToe():   
+    os.system('cls')
     def intro():
         print("                It is impossible to win in this still you can try you best XD ")
         print("                       Enter board number in you turn to play your move           ")
@@ -780,7 +783,7 @@ def coinflip():
             7: ' ', 8: ' ', 9: ' '}
     pp = 'O'
     computer = 'X'
-    #we impliment minimac algo....
+    #we implement minimax algo....
     #reference from https://levelup.gitconnected.com/mastering-tic-tac-toe-with-minimax-algorithm-3394d65fa88f
     #Mastering Tic-Tac-Toe with Minimax Algorithm in Python
     intro()
@@ -806,19 +809,19 @@ def coinflip():
             if checkDraw():
                 print("Draw!")
                 time.sleep(2)
-                start1()
+                game1()
                 
             if checkWin():
                 if letter == 'X':
                     print("Bot wins!")
                     time.sleep(2)
-                    start1()
+                    game1()
                     
                 else:
                     print("player wins!")
-                    PlayerA.coins += 10
+                    PlayerA.coins += 500
                     time.sleep(2)
-                    start1()
+                    game1()
             return 
         else:
             print("Invalid position")
@@ -926,7 +929,7 @@ def coinflip():
         
 
 
-def bhargav():  
+def snakegame():  
     os.system('cls')
 
     import pygame
@@ -957,11 +960,9 @@ def bhargav():
     snake_body = [[100, 50],
                 [90, 50],
                 [80, 50],
-                [70, 50]
-                ]
+                [70, 50]]
 
-    fruit_position = [random.randrange(1, (window_x//10)) * 10,
-                    random.randrange(1, (window_y//10)) * 10]
+    fruit_position = [random.randrange(1, (window_x//10)) * 10, random.randrange(1, (window_y//10)) * 10]
     fruit_spawn = True
 
     
@@ -1069,7 +1070,7 @@ def bhargav():
 
     
 
-def jatin():
+def mazegame():
     from random import randint
     os.system('cls')
 
