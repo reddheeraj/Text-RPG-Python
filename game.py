@@ -57,7 +57,7 @@ class Player:  #player overlay
         self.health = self.MaxHealth
         self.MaxMana = 20
         self.mana = self.MaxMana
-        self.coins = 20
+        self.coins = 30
         self.potions = {"Potion": 3, "Greater Healing Potion": 0}
         self.base_attack = 10
         self.weapons = ["Fists", "Wooden Sword"]
@@ -504,32 +504,33 @@ def potion1():    #INCREASES HEALTH
 
     
     
-    if option == "Potion":                       #potion = +20 health
+    if option == "Potion":                       #potion = +30 health
         if PlayerA.potions[option] > 0:
             PlayerA.health += 30 
+            PlayerA.potions["Potion"] -= 1
             if PlayerA.health > PlayerA.MaxHealth:
                 PlayerA.health = PlayerA.MaxHealth
-                PlayerA.potions["Potion"] -= 1
-                print("You drank a Potion!\nPotions left: " + str(PlayerA.potions["Potion"]))
-                time.sleep(2)
+            print("You drank a Potion!\nPotions left: " + str(PlayerA.potions["Potion"]))
+            time.sleep(2)
         else:
             print("You don't have any Potions!")
             time.sleep(2)
     elif option == "Greater Healing Potion":
             if PlayerA.potions[option] > 0:
-                PlayerA.health += 80               #ghpotion increases 50 health   
+                PlayerA.health += 80               #ghpotion increases 80 health   
+                PlayerA.potions[option] -= 1
                 if PlayerA.health > PlayerA.MaxHealth:
                     PlayerA.health = PlayerA.MaxHealth
-                    PlayerA.potions[option] -= 1
-                    print("You drank a Greater Healing Potion!")
-                    time.sleep(2)
+                print("You drank a Greater Healing Potion!")
+                time.sleep(2)
             else:
                 print("You don't have any Greater Healing Potions!")
                 time.sleep(2)
     else:
         print("That %s does not exist!" % option)
+        time.sleep(2)
         #os.system('cls')
-        potion1()
+
 
 
 def run():                 # decrease coins if want to run, else fight
