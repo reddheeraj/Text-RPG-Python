@@ -768,46 +768,161 @@ def minigame():
         minigame()
 
 def coinflip():   
-    os.system('cls')
-    print("------------------------------------------------------------------------")
-    cf = "Welcome to COIN FLIP!\nBet an Amount and guess HEADS or TAILS.\nIf you guess the flip correctly, you win your bet and coins!\nIf you do not guess correctly, you lose your bet and coins.\n"
-    #for c in cf:
-    #    print(c, end = "")
-    #    time.sleep(0.02)
-    #time.sleep(2)
-    print("------------------------------------------------------------------------\n")
-    ####
+    def intro():
+        print("                It is impossible to win in this still you can try you best XD ")
+        print("                       Enter board number in you turn to play your move           ")
+        print("                     +_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+_+")
+        time.sleep(5)
+        os.system('cls')
 
-    cfchoice = random.choice(["Heads", "Tails"])
-    bet = 0
-    
-    print("Enter BET Amount: ")
-    bet = int(input(">>>> "))
+    board = {1: ' ', 2: ' ', 3: ' ',
+            4: ' ', 5: ' ', 6: ' ',
+            7: ' ', 8: ' ', 9: ' '}
+    pp = 'O'
+    computer = 'X'
+    #we impliment minimac algo....
+    #reference from https://levelup.gitconnected.com/mastering-tic-tac-toe-with-minimax-algorithm-3394d65fa88f
+    #Mastering Tic-Tac-Toe with Minimax Algorithm in Python
+    intro()
+    def printBoard(board):
+        os.system('cls')
+        print(board[1] + " |" + board[2] + " |" + board[3])
+        print("-+-+-+-+-")
+        print(board[4] + " |" + board[5] + " |" + board[6])
+        print("-+-+-+-+-")
+        print(board[7] + " |" + board[8] + " |" + board[9])
+        print("\n")
+       
 
-    if PlayerA.coins >= bet:
-        print("Enter Guess: [HEADS(h) or TAILS(t)]")
-        guess = input(">>>> ")
+    def spaceIsFree(position):
+        if board[position] == ' ':
+            return True 
+        return False 
 
-        if guess == "h":
-            guess = "Heads"
-        elif guess == "t":
-            guess = "Tails"
-        
-        
-        if guess == cfchoice:
-            print("You have Guessed CORRECTLY!!!!!\nYou have Won %i 🪙" % bet)
-            PlayerA.coins += bet
-            time.sleep(3)
-            game1()
+    def insertLetter(letter, position):
+        if spaceIsFree(position):
+            board[position] = letter 
+            printBoard(board)
+            if checkDraw():
+                print("Draw!")
+                time.sleep(2)
+                start1()
+                
+            if checkWin():
+                if letter == 'X':
+                    print("Bot wins!")
+                    time.sleep(2)
+                    start1()
+                    
+                else:
+                    print("player wins!")
+                    PlayerA.coins += 10
+                    time.sleep(2)
+                    start1()
+            return 
         else:
-            print("You have guessed INCORRECTLY. You lost %i 🪙" % bet)
-            PlayerA.coins -= bet
-            time.sleep(3)
-            game1()
-    else:
-        print("You do not have Enough 🪙 coins!!!")
-        time.sleep(4)
-        minigame()
+            print("Invalid position")
+            position = int(input("Please enter a new position: "))
+            insertLetter(letter, position)
+            return    
+
+    def checkWin():
+        if (board[1] == board[2] and board[1] == board[3] and board[1] != ' '):
+            return True
+        elif (board[4] == board[5] and board[4] == board[6] and board[4] != ' '):
+            return True
+        elif (board[7] == board[8] and board[7] == board[9] and board[7] != ' '):
+            return True
+        elif (board[1] == board[4] and board[1] == board[7] and board[1] != ' '):
+            return True
+        elif (board[2] == board[5] and board[2] == board[8] and board[2] != ' '):
+            return True
+        elif (board[3] == board[6] and board[3] == board[9] and board[3] != ' '):
+            return True
+        elif (board[1] == board[5] and board[1] == board[9] and board[1] != ' '):
+            return True
+        elif (board[7] == board[5] and board[7] == board[3] and board[7] != ' '):
+            return True
+        else:
+            return False
+
+    def checkWhichMarkWon(mark):
+        if (board[1] == board[2] and board[1] == board[3] and board[1] == mark):
+            return True
+        elif (board[4] == board[5] and board[4] == board[6] and board[4] == mark):
+            return True
+        elif (board[7] == board[8] and board[7] == board[9] and board[7] == mark):
+            return True
+        elif (board[1] == board[4] and board[1] == board[7] and board[1] == mark):
+            return True
+        elif (board[2] == board[5] and board[2] == board[8] and board[2] == mark):
+            return True
+        elif (board[3] == board[6] and board[3] == board[9] and board[3] == mark):
+            return True
+        elif (board[1] == board[5] and board[1] == board[9] and board[1] == mark):
+            return True
+        elif (board[7] == board[5] and board[7] == board[3] and board[7] == mark):
+            return True
+        else:
+            return False
+
+    def checkDraw():
+        for key in board.keys():
+            if board[key] == ' ':
+                return False 
+        return True 
+
+    def ppMove():
+        position = int(input("Enter a position for 'O': "))
+        insertLetter(pp, position)
+        return 
+
+    def compMove():
+        bestScore = -800
+        bestMove = 0
+        for key in board.keys():
+            if board[key] == ' ':
+                board[key] = computer
+                score = minimax(board, False)
+                board[key] = ' '
+                if score > bestScore:
+                    bestScore = score 
+                    bestMove = key
+        insertLetter(computer, bestMove)
+        return 
+    def minimax(board, isMaximizing):
+        if checkWhichMarkWon(computer):
+            return 1 
+        elif checkWhichMarkWon(pp):
+            return -1 
+        elif checkDraw():
+            return 0
+            
+        if isMaximizing:
+            bestScore = -800 
+            for key in board.keys():
+                if board[key] == ' ':
+                    board[key] = computer 
+                    score = minimax(board, False)
+                    board[key] = ' '
+                    if score > bestScore:
+                        bestScore = score
+            return bestScore 
+        else:
+            bestScore = 800 
+            for key in board.keys():
+                if board[key] == ' ':
+                    board[key] = pp 
+                    score = minimax(board, True)
+                    board[key] = ' '
+                    if score < bestScore:
+                        bestScore = score 
+            return bestScore
+
+
+    while not checkWin():
+        compMove()
+        ppMove()
         
 
 
