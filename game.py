@@ -923,10 +923,21 @@ def TicTacToe():
                         bestScore = score 
             return bestScore
 
+    def firstmover():
+            printBoard(board)
+            first = int(input("\n| 1 for first move\n| 2 for going second\n>>> "))
+            if first == 1:
+                while not checkWin():
+                    ppMove()
+                    time.sleep(1)
+                    compMove()
+            if first == 2:
+                while not checkWin():
+                    compMove()
+                    time.sleep(1)
+                    ppMove()
+    firstmover()
 
-    while not checkWin():
-        compMove()
-        ppMove()
         
 
 
