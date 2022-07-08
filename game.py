@@ -7,7 +7,7 @@
 #different attacks /DONE/
 #mini quests/something to earn coins /TASKS GIVEN/ /3 DONE/ /0 LEFT/
 #Monster Class - objects being different monsters /DONE/
-#web /Not doing because don't know how to implement Save file/Load file in web mode
+#web /NOT doing because don't know how to implement Save file/Load file in web mode/
 #uh locations system ig /Not Doing or maybe I shall/ /Acutally Did it/
 
 #to do 
@@ -185,7 +185,7 @@ def new_game():   #new game
     #game1()
     lore()
 
-def lore():
+def lore():  #intro before game
     os.system('cls')
     lorestr1 = "A Long time ago, this World was very peaceful...\nBut One day, A Portal opened into our world, and Monsters came pouring out of it.\nA Small group of Humans suddenly started Awakening! They came together to Defeat the monsters and save Humanity."
     lorestr2 = "\n\nYou are one of the gifted Heroes who was Awakened with SuperHuman Powers and Strength! Now go kill some Monsters!"
@@ -199,7 +199,7 @@ def lore():
     time.sleep(3)
     game1()
 
-def loc_image():
+def loc_image():  #prints visuals of location
     if PlayerA.currLocation == Locations[0]:
         print("/================\\")
         print("|      /\\        |")
@@ -557,7 +557,7 @@ def victory():
     global new_loc_1
     global new_loc_2
     count = count + 1
-    if count == 5:
+    if count == 5: #count = 5 original
         PlayerA.currLocation = Locations[1]
         PlayerA.MaxHealth += 150
         PlayerA.MaxMana += 20
@@ -565,7 +565,7 @@ def victory():
         print("Congratulations! You have moved to a new Location [Forest of Elves]!")
         new_loc_1 = True
         time.sleep(3)
-    if count == 15:
+    if count == 15: #count = 15 original
         PlayerA.currLocation = Locations[2]
         PlayerA.MaxHealth += 400
         PlayerA.MaxMana += 50
@@ -937,7 +937,6 @@ def TicTacToe():
                     time.sleep(1)
                     ppMove()
     firstmover()
-
         
 
 
