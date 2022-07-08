@@ -13,5 +13,4 @@
 - It involves the *Main Character/Player* descending into a **monster infested World** to fight off monsters and gain experience and coins along the way!
 - It has a shop, inventory, fight mechanics, location system, Save and Load game features etc
 
-Still under development.
 
