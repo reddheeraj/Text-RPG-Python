@@ -1109,6 +1109,12 @@ def mazegame():
     mazeX = 5
     mazeY = 5
     enemy_number = 6
+    X = int(input("Enter the size of the row( M X M) should be greater then 5):>> "))
+    if X < 5:
+        X = 5
+    mazeX = X
+    mazeY = X
+    enemy_number = int(0.25 * (mazeX * mazeY))
     board = [["| |" for a in range(mazeX)] for b in range(mazeY)]
     currentposition = "|&|" 
     board[charX][charY] = currentposition
@@ -1140,10 +1146,10 @@ def mazegame():
 
         #print(ls)
         for i in board:
-            print("--- --- --- --- ---")
+            print("----"*mazeX)
             print(" ".join(i))
-            print("--- --- --- --- ---")
-        print("                   -🥇-")
+            print("----"*mazeX)
+        print("    "*mazeX + "-🥇-")
 
         print("Instructions :")
         print("Up: W  ||  Down: S  || Left: A  || Right: D")
